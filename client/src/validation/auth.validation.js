@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from 'joi'
 
 export const signupValidation = Joi.object({
   fullName: Joi.string()
@@ -10,13 +10,13 @@ export const signupValidation = Joi.object({
   password: Joi.string()
     .min(6)
     .max(30) // Maximum length of 30 characters
-    .pattern(new RegExp("^[a-zA-Z0-9!@#$%^&*()_+=-]+$")) // Allows only alphanumeric and special characters
-    .pattern(new RegExp("(?=.*[a-z])")) // Must contain at least one lowercase letter
-    .pattern(new RegExp("(?=.*[A-Z])")) // Must contain at least one uppercase letter
-    .pattern(new RegExp("(?=.*[0-9])")) // Must contain at least one digit
-    .pattern(new RegExp("(?=.*[!@#$%^&*()_+=-])")) // Must contain at least one special character
-    .required(),
-});
+    .pattern(new RegExp('^[a-zA-Z0-9!@#$%^&*()_+=-]+$')) // Allows only alphanumeric and special characters
+    .pattern(new RegExp('(?=.*[a-z])')) // Must contain at least one lowercase letter
+    .pattern(new RegExp('(?=.*[A-Z])')) // Must contain at least one uppercase letter
+    .pattern(new RegExp('(?=.*[0-9])')) // Must contain at least one digit
+    .pattern(new RegExp('(?=.*[!@#$%^&*()_+=-])')) // Must contain at least one special character
+    .required()
+})
 export const signinValidation = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
@@ -24,10 +24,10 @@ export const signinValidation = Joi.object({
   password: Joi.string()
     .min(6)
     .max(30) // Maximum length of k30 characters
-    .pattern(new RegExp("^[a-zA-Z0-9!@#$%^&*()_+=-]+$")) // Allows only alphanumeric and special characters
-    .pattern(new RegExp("(?=.*[a-z])")) // Must contain at least one lowercase letter
-    .pattern(new RegExp("(?=.*[A-Z])")) // Must contain at least one uppercase letter
-    .pattern(new RegExp("(?=.*[0-9])")) // Must contain at least one digit
-    .pattern(new RegExp("(?=.*[!@#$%^&*()_+=-])")) // Must contain at least one special character
-    .required(),
-});
+    .pattern(new RegExp('^[a-zA-Z0-9!@#$%^&*()_+=-]+$')) // Allows only alphanumeric and special characters
+    .pattern(new RegExp('(?=.*[a-z])')) // Must contain at least one lowercase letter
+    .pattern(new RegExp('(?=.*[A-Z])')) // Must contain at least one uppercase letter
+    .pattern(new RegExp('(?=.*[0-9])')) // Must contain at least one digit
+    .pattern(new RegExp('(?=.*[!@#$%^&*()_+=-])')) // Must contain at least one special character
+    .required()
+})

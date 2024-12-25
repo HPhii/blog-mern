@@ -1,27 +1,27 @@
-import React from "react";
+import React from 'react'
 
 const Tag = ({ tag, setBlog, i }) => {
   const handleDelete = () => {
-    setBlog((prev) => {
-      const filteredTags = prev.tags.filter((t) => t !== tag);
-      return { ...prev, tags: filteredTags };
-    });
-  };
-  const handleKeyDown = (e) => {
+    setBlog(prev => {
+      const filteredTags = prev.tags.filter(t => t !== tag)
+      return { ...prev, tags: filteredTags }
+    })
+  }
+  const handleKeyDown = e => {
     if (e.keyCode == 13 || e.keyCode == 188) {
-      e.preventDefault();
-      setBlog((prev) => {
-        let tags = prev.tags;
-        tags[i] = e.target.innerText;
-        return { ...prev, tags };
-      });
-      e.target.setAttribute("contentEditable", false);
+      e.preventDefault()
+      setBlog(prev => {
+        let tags = prev.tags
+        tags[i] = e.target.innerText
+        return { ...prev, tags }
+      })
+      e.target.setAttribute('contentEditable', false)
     }
-  };
-  const addEditable = (e) => {
-    e.target.setAttribute("contentEditable", true);
-    e.target.focus();
-  };
+  }
+  const addEditable = e => {
+    e.target.setAttribute('contentEditable', true)
+    e.target.focus()
+  }
   return (
     <div className="relative p-2 mt-2 mr-2 px-5 bg-white rounded-full inline-block hover:bg-opacity-50 pr-10">
       <p
@@ -38,7 +38,7 @@ const Tag = ({ tag, setBlog, i }) => {
         <i className="fi fi-br-cross text-[10px] pointer-events-none"></i>
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default Tag;
+export default Tag

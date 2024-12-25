@@ -1,4 +1,4 @@
-const Progress = ({ progress = 0, text = "Uploading...", className }) => {
+const Progress = ({ progress = 0, text = 'Uploading...', className }) => {
   return (
     <div className={className}>
       <div className="w-full">
@@ -12,12 +12,12 @@ const Progress = ({ progress = 0, text = "Uploading...", className }) => {
         >
           <div
             className="flex flex-col justify-center rounded-full overflow-hidden bg-black text-xs text-white text-center whitespace-nowrap transition duration-500 dark:bg-blue-500"
-            style={{ width: progress + "%" }}
+            style={{ width: progress + '%' }}
           ></div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Progress;
+export default Progress

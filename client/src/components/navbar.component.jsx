@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext";
-import UserNavigationPanel from "./user-navigation.component";
+import { useState } from 'react'
+import { Link, Outlet } from 'react-router-dom'
+import { useAuthContext } from '../context/AuthContext'
+import UserNavigationPanel from './user-navigation.component'
 
 const Navbar = () => {
-  const [searchBoxVisiblity, setSearchBoxVisiblity] = useState(false);
-  const [toggleLinks, setToggleLinks] = useState(false);
-  const { user } = useAuthContext();
+  const [searchBoxVisiblity, setSearchBoxVisiblity] = useState(false)
+  const [toggleLinks, setToggleLinks] = useState(false)
+  const { user } = useAuthContext()
   const handleBlur = () => {
     setTimeout(() => {
-      setToggleLinks(false);
-    }, 140);
-  };
+      setToggleLinks(false)
+    }, 140)
+  }
   return (
     <>
       <header className="navbar">
@@ -20,8 +20,8 @@ const Navbar = () => {
         </Link>
         <div
           className={
-            "absolute bg-while w-full left-0 top-full mt-0.5 border-b border-grey py-4 px-[5vw] md:border-none md:block md:relative md:inset-0 md:p-0 md:w-auto " +
-            (searchBoxVisiblity ? "show" : "hide md:show")
+            'absolute bg-while w-full left-0 top-full mt-0.5 border-b border-grey py-4 px-[5vw] md:border-none md:block md:relative md:inset-0 md:p-0 md:w-auto ' +
+            (searchBoxVisiblity ? 'show' : 'hide md:show')
           }
         >
           <input
@@ -35,7 +35,7 @@ const Navbar = () => {
         <div className="flex items-center gap-3 md:gap-6 ml-auto ">
           <button
             className="md:hidden bg-grey w-12 h-12 text-dark-grey rounded-full flex items-center justify-center opacity-90 hover:opacity-100 active:opacity-80"
-            onClick={() => setSearchBoxVisiblity((prev) => !prev)}
+            onClick={() => setSearchBoxVisiblity(prev => !prev)}
           >
             <i className="fi fi-rr-search text-xl"></i>
           </button>
@@ -64,7 +64,7 @@ const Navbar = () => {
               </Link>
               <div
                 className="relative"
-                onClick={() => setToggleLinks((prev) => !prev)}
+                onClick={() => setToggleLinks(prev => !prev)}
                 onBlur={handleBlur}
               >
                 <button className="w-12 h-12">
@@ -84,7 +84,7 @@ const Navbar = () => {
         <Outlet />
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

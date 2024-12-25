@@ -1,21 +1,21 @@
-import { useState } from "react";
-import BlogEditor from "../components/blog-editor.component";
-import PublishForm from "../components/publish-form.component";
+import { useState } from 'react'
+import BlogEditor from '../components/blog-editor.component'
+import PublishForm from '../components/publish-form.component'
 
 const blogStructure = {
-  title: "",
-  banner: "",
+  title: '',
+  banner: '',
   content: [],
   tags: [],
-  des: "",
-};
+  des: ''
+}
 const Editor = () => {
-  const [editorState, setEditorState] = useState("editor");
-  const [blogEditor, setBlogEditor] = useState({ isReady: false });
-  const [blogDetail, setBlogDetail] = useState(blogStructure);
+  const [editorState, setEditorState] = useState('editor')
+  const [blogEditor, setBlogEditor] = useState({ isReady: false })
+  const [blogDetail, setBlogDetail] = useState(blogStructure)
   return (
     <>
-      {editorState === "editor" ? (
+      {editorState === 'editor' ? (
         <BlogEditor
           blog={blogDetail}
           setBlog={setBlogDetail}
@@ -31,7 +31,7 @@ const Editor = () => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default Editor;
+export default Editor

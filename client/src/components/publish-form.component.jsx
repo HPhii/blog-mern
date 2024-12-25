@@ -1,33 +1,33 @@
-import React from "react";
-import AnimationWrapper from "../common/page-animation";
-import Tag from "./tags.component";
-import toast from "react-hot-toast";
+import React from 'react'
+import AnimationWrapper from '../common/page-animation'
+import Tag from './tags.component'
+import toast from 'react-hot-toast'
 
 const PublishForm = ({ blog, setBlog, setEditorState }) => {
-  const maxLimit = 200;
-  const tagLimit = 10;
-  const handleKeyDown = (e) => {
+  const maxLimit = 200
+  const tagLimit = 10
+  const handleKeyDown = e => {
     if (e.keyCode == 13 || e.keyCode == 188) {
-      e.preventDefault();
-      const tag = e.target.value;
-      if (blog.tags.includes(tag)) return (e.target.value = "");
-      if (!tag) return;
+      e.preventDefault()
+      const tag = e.target.value
+      if (blog.tags.includes(tag)) return (e.target.value = '')
+      if (!tag) return
       if (blog.tags.length >= tagLimit)
-        return toast.error("you hit the limit of tags");
-      setBlog((prev) => ({ ...prev, tags: [...prev.tags, tag] }));
-      e.target.value = "";
+        return toast.error('you hit the limit of tags')
+      setBlog(prev => ({ ...prev, tags: [...prev.tags, tag] }))
+      e.target.value = ''
     }
-  };
+  }
   const publishBlog = () => {
-    console.log(blog);
-  };
+    console.log(blog)
+  }
 
   return (
     <AnimationWrapper>
       <section className="w-screen min-h-screen grid items-center lg:grid-cols-2 py-16 lg:gap-4">
         <button
           className="w-12 h-12 absolute right-[5vw] z-10 top-[5%] lg:top[10%] hover:bg-dark-grey/10 rounded-full flex items-center justify-center"
-          onClick={() => setEditorState("editor")}
+          onClick={() => setEditorState('editor')}
         >
           <i className="fi fi-br-cross"></i>
         </button>
@@ -47,8 +47,8 @@ const PublishForm = ({ blog, setBlog, setEditorState }) => {
             type="text"
             placeholder="Blog Title"
             value={blog.title}
-            onChange={(e) =>
-              setBlog((prev) => ({ ...prev, title: e.target.value }))
+            onChange={e =>
+              setBlog(prev => ({ ...prev, title: e.target.value }))
             }
             className="input-box pl-4"
           />
@@ -59,14 +59,12 @@ const PublishForm = ({ blog, setBlog, setEditorState }) => {
             maxLength={maxLimit}
             value={blog.des}
             className="h-40 resize-none leading-7 input-box"
-            onChange={(e) =>
-              setBlog((prev) => ({ ...prev, des: e.target.value }))
-            }
-            onKeyDown={(e) => (e.keyCode === 13 ? e.preventDefault() : null)}
+            onChange={e => setBlog(prev => ({ ...prev, des: e.target.value }))}
+            onKeyDown={e => (e.keyCode === 13 ? e.preventDefault() : null)}
           />
           <p
             className={`text-dark-grey text-right ${
-              +blog.des.length === maxLimit ? "text-red" : ""
+              +blog.des.length === maxLimit ? 'text-red' : ''
             }`}
           >
             {maxLimit - blog.des.length} characters left
@@ -94,7 +92,7 @@ const PublishForm = ({ blog, setBlog, setEditorState }) => {
         </div>
       </section>
     </AnimationWrapper>
-  );
-};
+  )
+}
 
-export default PublishForm;
+export default PublishForm

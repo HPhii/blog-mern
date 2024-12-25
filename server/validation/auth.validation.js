@@ -15,6 +15,7 @@ export const signupValidation = Joi.object({
     .pattern(new RegExp("(?=.*[!@#$%^&*()_+=-])")) // Must contain at least one special character
     .required(),
 });
+
 export const signinValidation = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string()

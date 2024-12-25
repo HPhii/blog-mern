@@ -1,19 +1,19 @@
-import { Link } from "react-router-dom";
-import AnimationWrapper from "../common/page-animation";
-import { useAuthContext } from "../context/AuthContext";
-import toast from "react-hot-toast";
-import axios from "axios";
+import { Link } from 'react-router-dom'
+import AnimationWrapper from '../common/page-animation'
+import { useAuthContext } from '../context/AuthContext'
+import toast from 'react-hot-toast'
+import axios from 'axios'
 
 const UserNavigationPanel = () => {
-  const { user, signout } = useAuthContext();
+  const { user, signout } = useAuthContext()
   const logout = async () => {
     try {
-      await axios.post("/api/auth/signout");
-      signout();
+      await axios.post('/api/auth/signout')
+      signout()
     } catch (error) {
-      toast("Faild to sign out try agin later.");
+      toast('Faild to sign out try agin later.')
     }
-  };
+  }
 
   return (
     <AnimationWrapper
@@ -61,7 +61,7 @@ const UserNavigationPanel = () => {
         </button>
       </div>
     </AnimationWrapper>
-  );
-};
+  )
+}
 
-export default UserNavigationPanel;
+export default UserNavigationPanel

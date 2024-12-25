@@ -1,76 +1,158 @@
-/* eslint-disable react/no-unescaped-entities */
-import { Link } from 'react-router-dom'
-import InputBox from '../components/input.component'
-import googleIcon from '../imgs/google.png'
-import AnimationWrapper from '../common/page-animation'
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import Input from "../components/input.component";
+import AnimationWrapper from "../common/page-animation";
+import { useState } from "react";
+import {
+  signinValidation,
+  signupValidation,
+} from "../validation/auth.validation.js";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useAuthContext } from "../context/AuthContext.jsx";
+import { authWithGoogle } from "../common/firebase.jsx";
+import Spinner from "../components/Spinner.jsx";
 
-const UserAuthForm = ({ type }) => {
+const UserAuth = ({ type }) => {
+  const [loading, setLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const message = searchParams.get("message") || "";
+  const navigate = useNavigate();
+  const { user, configUser } = useAuthContext();
+  const submitForm = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const formData = new FormData(document.getElementById("auth-form"));
+      const authData = {};
+      for (let [key, value] of formData.entries()) {
+        authData[key] = value;
+      }
+
+      if (type == "sign-in") {
+        const { error } = signinValidation.validate({
+          email: authData.email,
+          password: authData.password,
+        });
+        if (error) return toast.error(error.details[0].message);
+      } else if (type == "sign-up") {
+        const { error } = signupValidation.validate({
+          fullName: authData.fullName,
+          email: authData.email,
+          password: authData.password,
+        });
+        if (error) return toast.error(error.details[0].message);
+      }
+      const { data } = await axios.post(
+        `/api/auth/${type.replace("-", "")}`,
+        authData
+      );
+      configUser(data);
+      toast.success(`${type.replace("-", " ")} successfull`);
+      navigate("/", { replace: true });
+    } catch (error) {
+      toast.error(JSON.parse(error.request.response).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleGoogleAuth = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const { user } = await authWithGoogle();
+      if (!user) return;
+      const oauthData = {
+        fullName: user.displayName,
+        email: user.email,
+        profile_img: user.photoURL,
+      };
+
+      const { data } = await axios.post("/api/auth/oauth", oauthData);
+      configUser(data);
+      toast.success(`${type.replace("-", " ")} successfull`);
+      navigate("/", { replace: true });
+    } catch (error) {
+      toast.error(JSON.parse(error.request.response).message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
-        <form className="w-[80%] max-w-[400px]">
-          <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
-            {type == 'sign-in' ? 'Welcome back!' : 'Join us Today!'}
+        <form
+          className="w-full max-w-[400px] mx-auto"
+          onSubmit={submitForm}
+          id="auth-form"
+        >
+          <h1 className="text-3xl font-gelasio capitalize text-center mb-16">
+            {type == "sign-in" ? "Welcome back" : "Join us today"}
           </h1>
-
-          {type != 'sign-in' ? (
-            <InputBox
-              name="fullname"
-              type="text"
-              placeholder="Full Name"
-              icon="fi-rr-user"
-            />
-          ) : (
-            ''
+          {message && (
+            <p className="text-center text-red font-bold mb-3 p-3 bg-red/10 rounded-md">
+              {message}
+            </p>
           )}
-
-          <InputBox
-            name="email"
-            type="email"
-            placeholder="Email"
-            icon="fi-rr-envelope"
-          />
-
-          <InputBox
+          {type != "sign-in" && (
+            <Input
+              name="fullName"
+              icon="user"
+              placeholder={"Full Name"}
+              type="text"
+            />
+          )}
+          <Input name="email" icon="at" placeholder={"Email"} type="email" />
+          <Input
             name="password"
+            icon="key"
+            placeholder={"Password"}
             type="password"
-            placeholder="Password"
-            icon="fi-rr-key"
           />
-
-          <button className="btn-dark center mt-14" type="submit">
-            {type.replace('-', ' ')}
+          <button
+            type="submit"
+            className="btn-dark mb-14 center w-full rounded-lg flex items-center justify-center"
+            disabled={loading}
+          >
+            {loading ? <Spinner className="w-9" /> : type.replace("-", " ")}
           </button>
-
-          <div className="relative w-full flex items-center justify-center gap-2 my-10 opacicity-10 uppercase text-black font-bold">
+          <div className="relative w-full flex items-center gap-2 my-10 opacity-30 uppercase text-black font-bold">
             <hr className="w-1/2 border-black" />
-            <p>or</p>
+            <p>Or</p>
             <hr className="w-1/2 border-black" />
           </div>
-
-          <button className="btn-dark flex items-center justify-center gap-4 w-[90%] center">
-            <img src={googleIcon} alt="google icon" className="w-5" />
-            countinue with google
+          <button
+            onClick={handleGoogleAuth}
+            className="btn-dark w-full items-center flex gap-5 justify-center py-4"
+            disabled={loading}
+          >
+            {loading ? (
+              <Spinner className="w-9" />
+            ) : (
+              <>
+                <img src="imgs/google.png" alt="google logo" className="w-6" />
+                <p>Continue with Google</p>
+              </>
+            )}
           </button>
-
-          {type == 'sign-in' ? (
-            <p className="mt-6 text-dark-grey text-xl text-center">
-              Don't have an account?{' '}
-              <Link to="/signup" className="underline text-black text-xl ml-1">
-                Join us Today.
+          {type == "sign-in" ? (
+            <p className="text-right mt-3 text-dark-grey">
+              don't have account yet?{" "}
+              <Link to="/signup" className="text-twitter hover:underline">
+                Sign Up
               </Link>
             </p>
           ) : (
-            <p className="mt-6 text-dark-grey text-xl text-center">
-              Already a member?{' '}
-              <Link to="/signin" className="underline text-black text-xl ml-1">
-                Sign In here.
+            <p className="text-right mt-3 text-dark-grey">
+              Already have an account?{" "}
+              <Link to="/signin" className="text-twitter hover:underline">
+                Sign In
               </Link>
             </p>
           )}
         </form>
       </section>
     </AnimationWrapper>
-  )
-}
-export default UserAuthForm
+  );
+};
+
+export default UserAuth;
